@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SFEDU — Спортивный зал</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #16161f;
+  --panel: #1a1a26;
+  --panel2: #1e1e2e;
+  --border: #2a2a3e;
+  --blue: #1a6fff;
+  --blue2: #2979ff;
+  --blue-glow: rgba(26,111,255,0.35);
+  --lime: #c6ff00;
+  --text: #e8e8f0;
+  --text2: #9090b0;
+  --text3: #5a5a7a;
+  --danger: #ff4444;
+  --success: #00e676;
+  --radius: 8px;
+  --sidebar: 200px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Montserrat',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILITIES
+════════════════════════════════════════════════════ */
+.hidden{display:none!important}
+.flex{display:flex}
+.flex-col{flex-direction:column}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.gap-2{gap:8px}
+.gap-3{gap:12px}
+.gap-4{gap:16px}
+.w-full{width:100%}
+.text-blue{color:var(--blue2)}
+.text-lime{color:var(--lime)}
+.text-muted{color:var(--text2)}
+.text-sm{font-size:12px}
+.fw-700{font-weight:700}
+.mt-2{margin-top:8px}
+.mt-4{margin-top:16px}
+.mb-2{margin-bottom:8px}
+
+/* ═══════════════════════════════════════════════════
+   SCROLLBAR
+════════════════════════════════════════════════════ */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--blue)}
+
+/* ═══════════════════════════════════════════════════
+   BUTTONS
+════════════════════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:6px;padding:9px 20px;border-radius:50px;border:none;
+  font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;
+  cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap;
+}
+.btn-primary{background:var(--blue2);color:#fff}
+.btn-primary:hover{background:#1565ff;box-shadow:0 0 20px var(--blue-glow)}
+.btn-outline{background:transparent;color:var(--blue2);border:1.5px solid var(--blue2)}
+.btn-outline:hover{background:rgba(41,121,255,.12)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--blue2);color:var(--text)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#cc0000}
+.btn-sm{padding:6px 14px;font-size:12px}
+.btn-lg{padding:13px 32px;font-size:15px}
+
+/* ═══════════════════════════════════════════════════
+   INPUTS
+════════════════════════════════════════════════════ */
+.input-group{display:flex;flex-direction:column;gap:6px}
+.input-label{font-size:12px;color:var(--text2);font-weight:500}
+.input{
+  background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);
+  color:var(--text);font-family:'Montserrat',sans-serif;font-size:13px;
+  padding:10px 14px;width:100%;transition:border-color .2s;outline:none;
+}
+.input:focus{border-color:var(--blue2)}
+.input::placeholder{color:var(--text3)}
+.input.error{border-color:var(--danger)}
+.input-error-msg{font-size:11px;color:var(--danger);margin-top:3px}
+
+/* ═══════════════════════════════════════════════════
+   TOP NAVBAR (landing)
+════════════════════════════════════════════════════ */
+#page-landing .navbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:56px;
+  background:rgba(10,10,15,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.navbar-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:.5px}
+.logo-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--blue),#0040cc);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+
+/* ═══════════════════════════════════════════════════
+   HERO
+════════════════════════════════════════════════════ */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;
+  overflow:hidden;padding-top:56px;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#050510 0%,#0a0a1a 40%,#070718 100%);
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(26,111,255,.15) 0%,transparent 70%);
+}
+.hero-content{
+  position:relative;z-index:2;padding:0 60px;max-width:600px;
+}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:.95;
+  letter-spacing:1px;margin-bottom:16px;
+}
+.hero-title span{color:var(--lime)}
+.hero-sub{
+  font-size:16px;color:var(--text2);font-weight:400;margin-bottom:36px;
+  line-height:1.6;
+}
+.hero-sub span{color:var(--lime);font-weight:700}
+.hero-img{
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:55%;height:90%;object-fit:cover;
+  -webkit-mask:linear-gradient(to left,rgba(0,0,0,.9) 40%,transparent 100%);
+  mask:linear-gradient(to left,rgba(0,0,0,.9) 40%,transparent 100%);
+  pointer-events:none;
+}
+.hero-runner{
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:55%;height:85%;
+  background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><text y="400" font-size="380" opacity=".04" fill="%231a6fff">🏃</text></svg>') center/cover no-repeat;
+}
+
+/* ═══════════════════════════════════════════════════
+   TRAINERS PAGE
+════════════════════════════════════════════════════ */
+#page-trainers{padding-top:56px}
+.trainers-header{padding:40px 40px 24px}
+.trainers-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:1px}
+.trainers-filters{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px 24px;flex-wrap:wrap;gap:12px;
+}
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.filter-tab{
+  padding:8px 18px;border-radius:50px;font-size:13px;font-weight:600;
+  cursor:pointer;border:none;font-family:'Montserrat',sans-serif;transition:all .2s;
+}
+.filter-tab.active{background:var(--text);color:var(--bg)}
+.filter-tab:not(.active){background:transparent;color:var(--text2);border:1.5px solid var(--border)}
+.filter-tab:not(.active):hover{border-color:var(--text2);color:var(--text)}
+.search-box{
+  display:flex;align-items:center;gap:8px;
+  background:var(--panel);border:1.5px solid var(--border);border-radius:50px;
+  padding:7px 16px;min-width:220px;
+}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-family:'Montserrat',sans-serif;font-size:13px;width:100%}
+.search-box input::placeholder{color:var(--text3)}
+.trainers-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:2px;padding:0 40px 40px;
+}
+.trainer-card{
+  position:relative;overflow:hidden;border-radius:var(--radius);
+  background:var(--panel);aspect-ratio:4/3;cursor:pointer;
+}
+.trainer-card img,.trainer-card .trainer-photo{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .4s ease;
+}
+.trainer-card:hover .trainer-photo{transform:scale(1.04)}
+.trainer-photo{
+  background:linear-gradient(135deg,var(--bg3),var(--panel2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:64px;color:var(--text3);
+}
+.trainer-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(5,5,15,.95) 0%,transparent 100%);
+  padding:60px 20px 20px;
+}
+.trainer-name{font-weight:700;font-size:16px;margin-bottom:4px}
+.trainer-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{
+  padding:3px 10px;border-radius:50px;font-size:11px;font-weight:600;
+  background:rgba(41,121,255,.2);color:var(--blue2);border:1px solid rgba(41,121,255,.3);
+}
+
+/* ═══════════════════════════════════════════════════
+   MODAL
+════════════════════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(5,5,15,.7);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--panel2);border:1px solid var(--border);border-radius:12px;
+  padding:32px;width:100%;max-width:400px;
+  transform:translateY(16px);transition:transform .25s;
+  box-shadow:0 24px 80px rgba(0,0,0,.6);
+}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:24px;
+}
+.modal-logo{
+  width:36px;height:36px;border-radius:8px;
+  background:linear-gradient(135deg,var(--blue),#0040cc);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.modal-title{font-weight:700;font-size:17px}
+.modal-form{display:flex;flex-direction:column;gap:14px}
+.modal-actions{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.modal-note{font-size:11px;color:var(--text3);text-align:center;line-height:1.5}
+
+/* ═══════════════════════════════════════════════════
+   PROFILE LAYOUT
+════════════════════════════════════════════════════ */
+#page-profile{display:flex;flex-direction:column;min-height:100vh;background:var(--bg)}
+.profile-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:52px;
+  background:var(--bg);border-bottom:1.5px solid var(--blue);
+  position:sticky;top:0;z-index:50;
+}
+.topbar-logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.topbar-stats{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stat-chip{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:50px;
+  background:var(--bg2);border:1.5px solid var(--blue);
+  font-size:12px;font-weight:600;color:var(--text);
+}
+.stat-chip .label{color:var(--text2);font-weight:400}
+.topbar-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),#0040cc);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;cursor:pointer;
+  border:2px solid var(--blue2);
+}
+
+.profile-body{display:flex;flex:1}
+
+/* Sidebar */
+.sidebar{
+  width:var(--sidebar);min-height:calc(100vh - 52px);
+  background:var(--bg);border-right:1.5px solid var(--blue);
+  padding:16px 0;position:sticky;top:52px;
+}
+.sidebar-nav{display:flex;flex-direction:column;gap:2px;padding:0 8px}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:var(--radius);
+  color:var(--text2);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s;border:none;background:none;font-family:'Montserrat',sans-serif;
+  width:100%;text-align:left;
+}
+.sidebar-item:hover{background:rgba(41,121,255,.1);color:var(--text)}
+.sidebar-item.active{background:rgba(41,121,255,.15);color:var(--blue2)}
+.sidebar-icon{font-size:16px;width:20px;text-align:center}
+
+/* Main content area */
+.profile-main{
+  flex:1;padding:24px;background:var(--bg);min-height:calc(100vh - 52px);
+}
+
+/* Content panels */
+.content-panel{
+  background:var(--panel);border:1.5px solid var(--blue);border-radius:10px;
+  padding:24px;
+}
+
+/* ═══════════════════════════════════════════════════
+   CALENDAR
+════════════════════════════════════════════════════ */
+.cal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+}
+.cal-title{font-weight:600;font-size:15px}
+.cal-nav{display:flex;align-items:center;gap:12px}
+.cal-btn{
+  background:none;border:none;color:var(--text2);
+  font-size:16px;cursor:pointer;padding:4px 8px;border-radius:4px;transition:color .2s;
+}
+.cal-btn:hover{color:var(--text)}
+.view-tabs{display:flex;gap:4px;background:var(--bg2);padding:3px;border-radius:6px}
+.view-tab{
+  padding:5px 12px;border-radius:4px;font-size:12px;font-weight:600;
+  cursor:pointer;border:none;font-family:'Montserrat',sans-serif;
+  background:transparent;color:var(--text2);transition:all .15s;
+}
+.view-tab.active{background:var(--blue2);color:#fff}
+
+/* Month grid */
+.month-grid{width:100%}
+.month-day-names{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  margin-bottom:4px;
+}
+.month-day-name{
+  text-align:right;padding:6px 8px;
+  font-size:11px;font-weight:600;color:var(--blue2);text-transform:uppercase;
+}
+.month-cells{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.month-cell{
+  background:var(--bg2);min-height:72px;padding:6px 8px;
+  position:relative;cursor:pointer;transition:background .15s;
+}
+.month-cell:hover{background:rgba(41,121,255,.08)}
+.month-cell.other-month .day-num{color:var(--text3)}
+.month-cell.today{background:rgba(41,121,255,.1)}
+.month-cell.today .day-num{color:var(--blue2);font-weight:700}
+.day-num{font-size:12px;color:var(--text2);text-align:right}
+.cal-event{
+  background:rgba(41,121,255,.25);border-left:2px solid var(--blue2);
+  border-radius:3px;padding:2px 5px;font-size:10px;
+  color:var(--text);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+/* Week grid */
+.week-grid{display:grid;grid-template-columns:60px repeat(7,1fr);gap:1px}
+.week-header-cell{
+  background:var(--bg2);padding:8px 4px;text-align:center;font-size:11px;font-weight:600;
+}
+.week-header-cell .wday{color:var(--blue2)}
+.week-header-cell .wnum{color:var(--text2);font-size:13px}
+.week-header-cell.today-col .wnum{color:var(--blue2);font-weight:700}
+.week-time-col{
+  display:flex;flex-direction:column;
+}
+.week-hour{
+  height:40px;display:flex;align-items:flex-start;justify-content:flex-end;
+  padding-right:8px;padding-top:3px;font-size:10px;color:var(--text3);
+}
+.week-day-col{display:flex;flex-direction:column;background:var(--bg2)}
+.week-slot{
+  height:40px;border-bottom:1px solid var(--border);
+  position:relative;cursor:pointer;transition:background .1s;
+}
+.week-slot:hover{background:rgba(41,121,255,.06)}
+
+/* Day view */
+.day-grid{display:grid;grid-template-columns:60px 1fr;gap:0}
+.day-header{
+  grid-column:2;background:var(--bg2);padding:10px;text-align:center;
+  font-weight:600;font-size:15px;margin-bottom:1px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  background:linear-gradient(135deg,rgba(41,121,255,.2),rgba(41,121,255,.08));
+  color:var(--blue2);
+}
+.day-time-col{display:flex;flex-direction:column}
+.day-slot-row{display:contents}
+.day-hour-label{
+  height:44px;display:flex;align-items:flex-start;padding:4px 8px 0 0;
+  font-size:10px;color:var(--text3);justify-content:flex-end;
+}
+.day-slot{
+  height:44px;background:rgba(41,121,255,.06);
+  border-bottom:1px solid rgba(41,121,255,.12);
+  cursor:pointer;transition:background .1s;
+}
+.day-slot:hover{background:rgba(41,121,255,.14)}
+
+/* ═══════════════════════════════════════════════════
+   PAYMENTS PAGE
+════════════════════════════════════════════════════ */
+.payments-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.payments-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.summary-card{
+  background:var(--bg2);border:1.5px solid var(--blue);border-radius:var(--radius);
+  padding:16px;position:relative;
+}
+.summary-card-title{font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:500}
+.summary-card-val{font-size:22px;font-weight:700;color:var(--text)}
+.summary-card-sub{font-size:11px;color:var(--text3);margin-top:4px}
+.summary-card .plus-btn{
+  position:absolute;right:12px;bottom:12px;
+  width:28px;height:28px;border-radius:50%;background:var(--blue2);
+  border:none;color:#fff;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;
+}
+.summary-card .plus-btn:hover{background:#1565ff}
+
+.payment-tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px}
+.payment-tab{
+  padding:6px 16px;border-radius:50px;font-size:12px;font-weight:600;
+  cursor:pointer;border:none;font-family:'Montserrat',sans-serif;
+  background:var(--bg2);color:var(--text2);transition:all .2s;
+}
+.payment-tab.active{background:var(--blue2);color:#fff}
+
+.payments-table{width:100%;border-collapse:collapse}
+.payments-table th{
+  text-align:left;padding:8px 12px;
+  font-size:11px;font-weight:600;color:var(--text3);
+  border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.5px;
+}
+.payments-table td{
+  padding:10px 12px;border-bottom:1px solid rgba(42,42,62,.5);
+  font-size:13px;color:var(--text2);
+}
+.payments-table tr:hover td{background:rgba(41,121,255,.04)}
+.op-badge{
+  padding:2px 8px;border-radius:50px;font-size:10px;font-weight:700;
+}
+.op-deposit{background:rgba(0,230,118,.15);color:var(--success)}
+.op-charge{background:rgba(255,68,68,.15);color:var(--danger)}
+
+/* ═══════════════════════════════════════════════════
+   MY DATA PAGE
+════════════════════════════════════════════════════ */
+.mydata-box{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;min-height:200px;
+}
+.mydata-field{margin-bottom:12px}
+.mydata-key{font-size:11px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.mydata-val{font-size:14px;color:var(--text);font-weight:500}
+
+/* ═══════════════════════════════════════════════════
+   DEPOSIT MODAL
+════════════════════════════════════════════════════ */
+.deposit-logo{
+  width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blue),#0040cc);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:24px;right:24px;z-index:9999;
+  background:var(--panel2);border:1px solid var(--border);
+  border-radius:8px;padding:12px 20px;
+  font-size:13px;color:var(--text);
+  transform:translateY(80px);opacity:0;
+  transition:all .3s;box-shadow:0 8px 32px rgba(0,0,0,.4);
+  pointer-events:none;max-width:320px;
+}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.success{border-color:var(--success);color:var(--success)}
+#toast.error{border-color:var(--danger);color:var(--danger)}
+
+/* ═══════════════════════════════════════════════════
+   PAGES CONTAINER
+════════════════════════════════════════════════════ */
+.page{display:none}
+.page.active{display:block}
+#page-profile.active{display:flex}
+
+/* ═══════════════════════════════════════════════════
+   ANIMATIONS
+════════════════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.animate-in{animation:fadeUp .4s ease both}
+.animate-in-2{animation:fadeUp .4s ease .1s both}
+.animate-in-3{animation:fadeUp .4s ease .2s both}
+
+/* ═══════════════════════════════════════════════════
+   LANDING SECTIONS
+════════════════════════════════════════════════════ */
+.section{padding:80px 60px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:1px;margin-bottom:32px}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.service-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:10px;
+  padding:24px;transition:border-color .2s,transform .2s;cursor:default;
+}
+.service-card:hover{border-color:var(--blue2);transform:translateY(-2px)}
+.service-icon{font-size:32px;margin-bottom:14px}
+.service-name{font-weight:700;font-size:15px;margin-bottom:8px}
+.service-desc{font-size:13px;color:var(--text2);line-height:1.6}
+
+.contacts-section{padding:60px;background:var(--bg2)}
+.contacts-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.contact-info p{color:var(--text2);line-height:2;font-size:14px}
+.contact-info strong{color:var(--text)}
+.contact-cta{
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;
+  padding:32px;text-align:center;
+}
+.contact-cta h3{font-size:20px;font-weight:700;margin-bottom:12px}
+.contact-cta p{color:var(--text2);font-size:13px;margin-bottom:20px;line-height:1.6}
+
+footer{
+  padding:24px 60px;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+footer p{font-size:12px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     PAGE: LANDING
+═════════════════════════════════════════════════ -->
+<div id="page-landing" class="page active">
+
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <div class="logo-icon">⚡</div>
+      SFEDU
+    </div>
+    <div class="nav-links">
+      <a href="#" onclick="showPage('page-landing')">Главная</a>
+      <a href="#schedule-section">Расписание</a>
+      <a href="#services-section">Услуги</a>
+      <a href="#" onclick="showPage('page-trainers')">Тренера</a>
+      <a href="#contacts-section">Контакты</a>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="openModal('modal-apply')">Войти</button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content animate-in">
+      <h1 class="hero-title">Ты можешь больше,<br><span>чем думаешь</span></h1>
+      <p class="hero-sub">Инвестиция в себя, которая окупится на <span>100%</span></p>
+      <div class="flex gap-3">
+        <button class="btn btn-primary btn-lg" onclick="openModal('modal-apply')">Записаться</button>
+        <a href="#services-section" class="btn btn-outline btn-lg">Узнать больше</a>
+      </div>
+    </div>
+    <!-- Decorative athlete silhouette -->
+    <div style="position:absolute;right:0;top:56px;bottom:0;width:55%;overflow:hidden;pointer-events:none">
+      <div style="position:absolute;inset:0;background:linear-gradient(to left,transparent 55%,var(--bg) 100%);z-index:2"></div>
+      <div style="
+        position:absolute;right:5%;top:50%;transform:translateY(-50%);
+        width:360px;height:480px;
+        background:radial-gradient(ellipse at center,rgba(26,111,255,.08) 0%,transparent 70%);
+      "></div>
+      <svg style="position:absolute;right:8%;top:50%;transform:translateY(-50%);opacity:.06;z-index:1" width="320" height="420" viewBox="0 0 320 420">
+        <ellipse cx="160" cy="210" rx="140" ry="200" fill="var(--blue2)"/>
+      </svg>
+      <!-- Athlete number/text decoration -->
+      <div style="position:absolute;right:40px;top:50%;transform:translateY(-50%);z-index:3;text-align:center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:200px;line-height:1;color:rgba(26,111,255,.12);user-select:none">01</div>
+      </div>
+      <!-- Lime accent line -->
+      <div style="position:absolute;right:0;top:50%;transform:translateY(-50%);width:4px;height:60%;background:linear-gradient(to bottom,transparent,var(--lime),transparent);z-index:4"></div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section" id="services-section">
+    <h2 class="section-title">Наши услуги</h2>
+    <div class="services-grid">
+      <div class="service-card animate-in">
+        <div class="service-icon">💪</div>
+        <div class="service-name">Набор массы</div>
+        <div class="service-desc">Индивидуальная программа для максимального роста мышечной массы</div>
+      </div>
+      <div class="service-card animate-in-2">
+        <div class="service-icon">🔥</div>
+        <div class="service-name">Похудение</div>
+        <div class="service-desc">Эффективное снижение веса под контролем профессионального тренера</div>
+      </div>
+      <div class="service-card animate-in-3">
+        <div class="service-icon">⚡</div>
+        <div class="service-name">Рельеф тела</div>
+        <div class="service-desc">Формирование идеального рельефа и проработка всех групп мышц</div>
+      </div>
+      <div class="service-card animate-in">
+        <div class="service-icon">🥊</div>
+        <div class="service-name">Кардио тренировки</div>
+        <div class="service-desc">Повышение выносливости и улучшение работы сердечно-сосудистой системы</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schedule section stub -->
+  <section class="section" id="schedule-section" style="padding-top:0">
+    <h2 class="section-title">Расписание</h2>
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:32px;text-align:center;color:var(--text2)">
+      <div style="font-size:48px;margin-bottom:12px">📅</div>
+      <p>Войдите в личный кабинет, чтобы увидеть персональное расписание</p>
+      <button class="btn btn-primary mt-4" onclick="openModal('modal-apply')">Записаться</button>
+    </div>
+  </section>
+
+  <!-- Contacts -->
+  <section class="contacts-section" id="contacts-section">
+    <div class="contacts-grid">
+      <div class="contact-info">
+        <h2 class="section-title" style="margin-bottom:20px">Контакты</h2>
+        <p><strong>Адрес:</strong> г. Ростов-на-Дону, ул. Пушкинская, 150</p>
+        <p><strong>Телефон:</strong> +7 (863) 123-45-67</p>
+        <p><strong>Email:</strong> info@sfedu-gym.ru</p>
+        <p><strong>Режим работы:</strong> Пн–Вс, 07:00 – 23:00</p>
+      </div>
+      <div class="contact-cta">
+        <h3>Готовы начать?</h3>
+        <p>Оставьте заявку и наш менеджер свяжется с вами в течение 30 минут</p>
+        <button class="btn btn-primary w-full" onclick="openModal('modal-apply')">Оставить заявку</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="navbar-logo"><div class="logo-icon" style="width:24px;height:24px;font-size:12px">⚡</div> SFEDU</div>
+    <p>© 2026 SFEDU Спортивный зал. Все права защищены.</p>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     PAGE: TRAINERS
+═════════════════════════════════════════════════ -->
+<div id="page-trainers" class="page">
+  <nav class="navbar">
+    <div class="navbar-logo" style="cursor:pointer" onclick="showPage('page-landing')">
+      <div class="logo-icon">⚡</div>SFEDU
+    </div>
+    <div class="nav-links">
+      <a href="#" onclick="showPage('page-landing')">Главная</a>
+      <a href="#">Расписание</a>
+      <a href="#">Услуги</a>
+      <a href="#" onclick="showPage('page-trainers')" style="color:var(--text)">Тренера</a>
+      <a href="#">Контакты</a>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="openModal('modal-apply')">Войти</button>
+  </nav>
+
+  <div style="padding-top:56px">
+    <div class="trainers-header">
+      <h1 class="trainers-title">Тренерский состав</h1>
+    </div>
+    <div class="trainers-filters">
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterTrainers('all',this)">Все</button>
+        <button class="filter-tab" onclick="filterTrainers('relief',this)">Рельеф тела</button>
+        <button class="filter-tab" onclick="filterTrainers('lose',this)">Похудение</button>
+        <button class="filter-tab" onclick="filterTrainers('mass',this)">Набор массы</button>
+      </div>
+      <div class="search-box">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input placeholder="Имя или фамилия" oninput="searchTrainers(this.value)" id="trainer-search">
+      </div>
+    </div>
+    <div class="trainers-grid" id="trainers-grid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     PAGE: PROFILE (Личный кабинет)
+═════════════════════════════════════════════════ -->
+<div id="page-profile" class="page">
+
+  <!-- Topbar -->
+  <div class="profile-topbar">
+    <div class="topbar-logo" onclick="showPage('page-landing')" style="cursor:pointer">
+      <div class="logo-icon" style="width:28px;height:28px;font-size:14px">⚡</div>
+      SFEDU
+    </div>
+    <div class="topbar-stats">
+      <div class="stat-chip"><span class="label">Баланс:</span> <span id="balance-display">0.00</span></div>
+      <div class="stat-chip"><span class="label">Посещения:</span> <span id="visits-display">0</span></div>
+      <button class="btn btn-primary btn-sm" onclick="openModal('modal-deposit')">+ Оплатить</button>
+    </div>
+    <div class="topbar-avatar" onclick="showSection('mydata')" id="avatar-initials">ПТ</div>
+  </div>
+
+  <div class="profile-body">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <button class="sidebar-item" onclick="showSection('mydata')" id="nav-mydata">
+          <span class="sidebar-icon">🏠</span> Главная
+        </button>
+        <button class="sidebar-item" onclick="showSection('schedule')" id="nav-schedule">
+          <span class="sidebar-icon">🔥</span> Расписание
+        </button>
+        <button class="sidebar-item" onclick="showSection('payments')" id="nav-payments">
+          <span class="sidebar-icon">💳</span> Платежи
+        </button>
+        <button class="sidebar-item" onclick="showSection('shop')" id="nav-shop">
+          <span class="sidebar-icon">🛒</span> Магазин
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="profile-main">
+
+      <!-- MY DATA section -->
+      <div id="section-mydata" class="animate-in">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h2 style="font-size:16px;font-weight:700">Мои данные</h2>
+          <span style="font-size:13px;color:var(--text2)" id="profile-month-label"></span>
+        </div>
+        <div class="content-panel">
+          <div class="mydata-box" id="mydata-content">
+            <div class="mydata-field">
+              <div class="mydata-key">ФИО</div>
+              <div class="mydata-val" id="md-name">—</div>
+            </div>
+            <div class="mydata-field">
+              <div class="mydata-key">Телефон</div>
+              <div class="mydata-val" id="md-phone">—</div>
+            </div>
+            <div class="mydata-field">
+              <div class="mydata-key">Email</div>
+              <div class="mydata-val" id="md-email">—</div>
+            </div>
+            <div class="mydata-field">
+              <div class="mydata-key">Тренер</div>
+              <div class="mydata-val" id="md-trainer">—</div>
+            </div>
+            <div class="mydata-field">
+              <div class="mydata-key">Заметки</div>
+              <div class="mydata-val" id="md-notes" style="color:var(--text2);font-weight:400;line-height:1.6">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHEDULE section -->
+      <div id="section-schedule" class="hidden animate-in">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div></div>
+          <span style="font-size:13px;color:var(--text2)" id="schedule-month-label"></span>
+          <div></div>
+        </div>
+        <div class="content-panel">
+          <div class="cal-header">
+            <div class="cal-nav">
+              <button class="cal-btn" onclick="calNav(-1)">‹</button>
+              <span class="cal-title" id="cal-month-title">Апрель 2026</span>
+              <button class="cal-btn" onclick="calNav(1)">›</button>
+            </div>
+            <div class="view-tabs">
+              <button class="view-tab active" onclick="setCalView('month',this)">Месяц</button>
+              <button class="view-tab" onclick="setCalView('week',this)">Неделя</button>
+              <button class="view-tab" onclick="setCalView('day',this)">День</button>
+            </div>
+          </div>
+          <div id="cal-body"></div>
+        </div>
+      </div>
+
+      <!-- PAYMENTS section -->
+      <div id="section-payments" class="hidden animate-in">
+        <div style="margin-bottom:16px;font-size:16px;font-weight:700" id="payments-month-label"></div>
+        <div class="content-panel">
+          <div class="payments-actions">
+            <button class="btn btn-outline btn-sm" onclick="openModal('modal-deposit')">
+              💳 Внести платёж
+            </button>
+            <button class="btn btn-ghost btn-sm">📊 Прогноз оплаты</button>
+            <button class="btn btn-ghost btn-sm">📋 Сверка взаиморасчётов</button>
+          </div>
+
+          <div class="payments-summary">
+            <div class="summary-card">
+              <div class="summary-card-title">Общий баланс</div>
+              <div class="summary-card-sub">Посещений: <span id="ps-visits">0</span></div>
+              <div class="summary-card-sub">Остаток: <span id="ps-balance">0.00</span></div>
+              <button class="plus-btn" onclick="openModal('modal-deposit')">+</button>
+            </div>
+            <div class="summary-card">
+              <div class="summary-card-title">Количество занятий</div>
+              <div class="summary-card-val" id="ps-total-sessions">10</div>
+              <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:18px">›</div>
+            </div>
+          </div>
+
+          <div class="payment-tabs">
+            <button class="payment-tab active" onclick="switchPayTab('invoices',this)">Счета на оплату</button>
+            <button class="payment-tab" onclick="switchPayTab('history',this)">История платежей</button>
+            <button class="payment-tab" onclick="switchPayTab('subs',this)">Абонементы</button>
+          </div>
+
+          <div id="pay-tab-invoices">
+            <table class="payments-table">
+              <thead><tr>
+                <th>Дата</th><th>Плательщик</th><th>Сумма</th><th>Тип операции</th>
+              </tr></thead>
+              <tbody id="payments-tbody">
+                <tr><td colspan="4" style="text-align:center;color:var(--text3);padding:24px">Нет данных</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="pay-tab-history" class="hidden">
+            <table class="payments-table">
+              <thead><tr>
+                <th>Дата</th><th>Услуга</th><th>Сумма</th><th>Тип</th>
+              </tr></thead>
+              <tbody id="history-tbody">
+                <tr><td colspan="4" style="text-align:center;color:var(--text3);padding:24px">Нет истории платежей</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="pay-tab-subs" class="hidden">
+            <table class="payments-table">
+              <thead><tr>
+                <th>Абонемент</th><th>Посещений</th><th>Действует до</th><th>Стоимость</th>
+              </tr></thead>
+              <tbody id="subs-tbody">
+                <tr><td colspan="4" style="text-align:center;color:var(--text3);padding:24px">Нет абонементов</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOP section -->
+      <div id="section-shop" class="hidden animate-in">
+        <div style="margin-bottom:16px;font-size:16px;font-weight:700">Магазин</div>
+        <div class="content-panel" style="text-align:center;padding:60px;color:var(--text2)">
+          <div style="font-size:48px;margin-bottom:12px">🛒</div>
+          <p>Раздел в разработке</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     MODAL: APPLY (Заявка)
+═════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-apply" onclick="closeModalOutside(event,'modal-apply')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-logo">⚡</div>
+      <div>
+        <div class="modal-title">SFEDU</div>
+        <div style="font-size:12px;color:var(--text2)">Добро пожаловать!</div>
+      </div>
+    </div>
+    <!-- Tabs -->
+    <div style="display:flex;gap:0;margin-bottom:20px;background:var(--bg2);border-radius:6px;padding:3px">
+      <button class="view-tab active" style="flex:1" onclick="switchAuthTab('apply',this)" id="tab-apply">Записаться</button>
+      <button class="view-tab" style="flex:1" onclick="switchAuthTab('login',this)" id="tab-login">Войти</button>
+    </div>
+
+    <!-- Apply form -->
+    <div id="auth-apply">
+      <div class="modal-form">
+        <div class="input-group">
+          <label class="input-label">ФИО</label>
+          <input class="input" id="apply-name" placeholder="Романов Тимофей Юрьевич">
+          <div class="input-error-msg hidden" id="err-name"></div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Номер телефона</label>
+          <input class="input" id="apply-phone" placeholder="+7(987)654-32-10">
+          <div class="input-error-msg hidden" id="err-phone"></div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Ваша почта</label>
+          <input class="input" id="apply-email" placeholder="example@gmail.com" type="email">
+          <div class="input-error-msg hidden" id="err-email"></div>
+        </div>
+        <div class="modal-note" id="apply-note" style="display:none"></div>
+        <div class="modal-actions">
+          <button class="btn btn-primary w-full" onclick="submitApply()">Записаться</button>
+          <button class="btn btn-ghost w-full" onclick="closeModal('modal-apply')">Отмена</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login form -->
+    <div id="auth-login" class="hidden">
+      <div class="modal-form">
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input class="input" id="login-email" placeholder="admin@gym.ru" type="email">
+          <div class="input-error-msg hidden" id="err-login-email"></div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Пароль</label>
+          <input class="input" id="login-password" placeholder="••••••••" type="password">
+          <div class="input-error-msg hidden" id="err-login-pass"></div>
+        </div>
+        <div class="input-error-msg hidden" id="err-login-general" style="text-align:center"></div>
+        <div class="modal-actions">
+          <button class="btn btn-primary w-full" onclick="submitLogin()">Войти</button>
+          <button class="btn btn-ghost w-full" onclick="closeModal('modal-apply')">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     MODAL: DEPOSIT (Внести платёж)
+═════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-deposit" onclick="closeModalOutside(event,'modal-deposit')">
+  <div class="modal" style="max-width:340px">
+    <div class="modal-header">
+      <div class="deposit-logo">⚡</div>
+      <div>
+        <div class="modal-title">SFEDU</div>
+        <div style="font-size:12px;color:var(--text2)">Внести платёж</div>
+      </div>
+    </div>
+    <div class="modal-form">
+      <div class="input-group">
+        <label class="input-label">Введите сумму пополнения</label>
+        <input class="input" id="deposit-amount" placeholder="5000" type="number" min="1">
+        <div class="input-error-msg hidden" id="err-deposit"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary w-full" onclick="submitDeposit()">Оплатить</button>
+        <button class="btn btn-ghost w-full" onclick="closeModal('modal-deposit')">Отмена</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+const API = 'http://localhost:8888/api/v1';
+
+let state = {
+  accessToken: localStorage.getItem('access_token') || null,
+  refreshToken: localStorage.getItem('refresh_token') || null,
+  role: localStorage.getItem('role') || null,
+  userID: localStorage.getItem('user_id') || null,
+  user: null,
+  calView: 'month',
+  calDate: new Date(),
+  sessions: [],
+  payments: [],
+  subs: [],
+  trainers: [
+    {id:1,name:'Алексей Петров',specialty:['relief','mass'],tags:['Рельеф тела','Набор массы']},
+    {id:2,name:'Мария Иванова',specialty:['lose'],tags:['Похудение']},
+    {id:3,name:'Денис Захаров',specialty:['mass','relief'],tags:['Набор массы','Рельеф тела']},
+    {id:4,name:'Ольга Смирнова',specialty:['lose','relief'],tags:['Похудение','Рельеф тела']},
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════
+//  API HELPERS
+// ═══════════════════════════════════════════════════════════
+async function apiFetch(path, opts={}) {
+  const headers = {'Content-Type':'application/json',...(opts.headers||{})};
+  if(state.accessToken) headers['Authorization'] = 'Bearer ' + state.accessToken;
+  const res = await fetch(API + path, {...opts, headers});
+  if(res.status === 401 && state.refreshToken) {
+    const ok = await tryRefresh();
+    if(ok) {
+      headers['Authorization'] = 'Bearer ' + state.accessToken;
+      return fetch(API + path, {...opts, headers});
+    }
+    logout();
+    return res;
+  }
+  return res;
+}
+
+async function tryRefresh() {
+  try {
+    const res = await fetch(API+'/auth/refresh',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({refresh_token: state.refreshToken})
+    });
+    if(!res.ok) return false;
+    const d = await res.json();
+    saveTokens(d);
+    return true;
+  } catch {return false;}
+}
+
+function saveTokens(d) {
+  state.accessToken = d.access_token;
+  state.refreshToken = d.refresh_token;
+  state.role = d.role;
+  state.userID = d.user_id;
+  localStorage.setItem('access_token', d.access_token);
+  localStorage.setItem('refresh_token', d.refresh_token);
+  localStorage.setItem('role', d.role);
+  localStorage.setItem('user_id', d.user_id);
+}
+
+function logout() {
+  state.accessToken = state.refreshToken = state.role = state.userID = null;
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('refresh_token');
+  localStorage.removeItem('role');
+  localStorage.removeItem('user_id');
+  showPage('page-landing');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PAGES
+// ═══════════════════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='page-trainers') renderTrainers();
+  if(id==='page-profile') initProfile();
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  MODALS
+// ═══════════════════════════════════════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function closeModalOutside(e, id) {
+  if(e.target.id === id) closeModal(id);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  AUTH TABS
+// ═══════════════════════════════════════════════════════════
+function switchAuthTab(tab, el) {
+  document.querySelectorAll('#modal-apply .view-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('auth-apply').classList.toggle('hidden', tab!=='apply');
+  document.getElementById('auth-login').classList.toggle('hidden', tab!=='login');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  APPLY
+// ═══════════════════════════════════════════════════════════
+async function submitApply() {
+  const name = document.getElementById('apply-name').value.trim();
+  const phone = document.getElementById('apply-phone').value.trim();
+  const email = document.getElementById('apply-email').value.trim();
+
+  // Reset errors
+  ['name','phone','email'].forEach(f=>{
+    document.getElementById('err-'+f).classList.add('hidden');
+    document.getElementById('apply-'+f).classList.remove('error');
+  });
+
+  let valid = true;
+  if(name.split(' ').filter(Boolean).length < 2) {
+    showFieldError('name','Укажите имя и фамилию'); valid=false;
+  }
+  const phoneRe = /^(\+7|8)[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
+  if(!phoneRe.test(phone.replace(/\s/g,''))) {
+    showFieldError('phone','Введите корректный российский номер'); valid=false;
+  }
+  const emailRe = /^[^\s@]+@(gmail\.com|mail\.ru|yandex\.ru|inbox\.ru|bk\.ru|list\.ru)$/i;
+  if(!emailRe.test(email)) {
+    showFieldError('email','Введите корректный email (gmail, mail.ru, yandex)'); valid=false;
+  }
+  if(!valid) return;
+
+  try {
+    const res = await fetch(API+'/auth/apply', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({full_name:name, phone, email})
+    });
+    const d = await res.json();
+    if(res.ok) {
+      const note = document.getElementById('apply-note');
+      note.textContent = d.message;
+      note.style.display = 'block';
+      note.style.color = 'var(--success)';
+      showToast('Заявка принята! Ожидайте звонка менеджера.','success');
+      setTimeout(()=>closeModal('modal-apply'),2000);
+    } else {
+      if(d.details && Array.isArray(d.details)) {
+        d.details.forEach(e=>showFieldError(e.field.replace('full_',''),e.message));
+      } else {
+        showToast(d.error||'Ошибка сервера','error');
+      }
+    }
+  } catch {
+    showToast('Не удалось подключиться к серверу','error');
+  }
+}
+
+function showFieldError(field, msg) {
+  const el = document.getElementById('err-'+field);
+  if(el) { el.textContent=msg; el.classList.remove('hidden'); }
+  const inp = document.getElementById('apply-'+field);
+  if(inp) inp.classList.add('error');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  LOGIN
+// ═══════════════════════════════════════════════════════════
+async function submitLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value;
+  ['login-email','login-pass','login-general'].forEach(f=>{
+    document.getElementById('err-'+f).classList.add('hidden');
+  });
+  if(!email){document.getElementById('err-login-email').textContent='Введите email';document.getElementById('err-login-email').classList.remove('hidden');return;}
+  if(!pass){document.getElementById('err-login-pass').textContent='Введите пароль';document.getElementById('err-login-pass').classList.remove('hidden');return;}
+
+  try {
+    const res = await fetch(API+'/auth/login',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password:pass})
+    });
+    const d = await res.json();
+    if(res.ok) {
+      saveTokens(d);
+      closeModal('modal-apply');
+      showToast('Добро пожаловать!','success');
+      showPage('page-profile');
+    } else {
+      const errEl = document.getElementById('err-login-general');
+      errEl.textContent = d.error || 'Неверный email или пароль';
+      errEl.classList.remove('hidden');
+    }
+  } catch {
+    showToast('Не удалось подключиться к серверу','error');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  DEPOSIT
+// ═══════════════════════════════════════════════════════════
+async function submitDeposit() {
+  const amount = parseFloat(document.getElementById('deposit-amount').value);
+  document.getElementById('err-deposit').classList.add('hidden');
+  if(!amount || amount <= 0) {
+    document.getElementById('err-deposit').textContent='Введите корректную сумму';
+    document.getElementById('err-deposit').classList.remove('hidden');
+    return;
+  }
+  try {
+    const res = await apiFetch('/payments/deposit',{
+      method:'POST',
+      body:JSON.stringify({user_id:parseInt(state.userID),amount,service_name:'Пополнение баланса'})
+    });
+    if(res.ok) {
+      closeModal('modal-deposit');
+      showToast('Баланс пополнен на '+amount.toFixed(2)+' ₽','success');
+      document.getElementById('deposit-amount').value='';
+      await loadProfile();
+    } else {
+      const d = await res.json();
+      showToast(d.error||'Ошибка','error');
+    }
+  } catch {
+    showToast('Ошибка подключения','error');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PROFILE
+// ═══════════════════════════════════════════════════════════
+async function initProfile() {
+  updateMonthLabels();
+  await loadProfile();
+  await loadSessions();
+  await loadPayments();
+  showSection('mydata');
+  renderCalendar();
+}
+
+async function loadProfile() {
+  if(!state.accessToken) return;
+  try {
+    const res = await apiFetch('/users/me');
+    if(res.ok) {
+      state.user = await res.json();
+      updateProfileUI();
+    }
+  } catch {}
+}
+
+function updateProfileUI() {
+  const u = state.user;
+  if(!u) return;
+  document.getElementById('balance-display').textContent = (+u.balance||0).toFixed(2);
+  document.getElementById('visits-display').textContent = u.visits||0;
+  document.getElementById('ps-balance').textContent = (+u.balance||0).toFixed(2);
+  document.getElementById('ps-visits').textContent = u.visits||0;
+  document.getElementById('md-name').textContent = u.full_name||'—';
+  document.getElementById('md-phone').textContent = u.phone||'—';
+  document.getElementById('md-email').textContent = u.email||'—';
+  document.getElementById('md-notes').textContent = u.notes||'—';
+  // Avatar initials
+  const initials = (u.full_name||'').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()||'П';
+  document.getElementById('avatar-initials').textContent = initials;
+}
+
+async function loadSessions() {
+  if(!state.accessToken) return;
+  try {
+    const now = new Date();
+    const from = new Date(now.getFullYear(), now.getMonth()-1, 1).toISOString().slice(0,10);
+    const to = new Date(now.getFullYear(), now.getMonth()+2, 1).toISOString().slice(0,10);
+    const res = await apiFetch(`/sessions/my?from=${from}&to=${to}`);
+    if(res.ok) {
+      const d = await res.json();
+      state.sessions = d.items||[];
+      renderCalendar();
+    }
+  } catch {}
+}
+
+async function loadPayments() {
+  if(!state.accessToken) return;
+  try {
+    const res = await apiFetch('/payments/my');
+    if(res.ok) {
+      const d = await res.json();
+      state.payments = d.items||[];
+      renderPaymentsTable();
+    }
+  } catch {}
+  try {
+    const res = await apiFetch('/subscriptions/my');
+    if(res.ok) {
+      const d = await res.json();
+      state.subs = d.items||[];
+      renderSubsTable();
+    }
+  } catch {}
+}
+
+function renderPaymentsTable() {
+  const tbody = document.getElementById('payments-tbody');
+  const histTbody = document.getElementById('history-tbody');
+  if(!state.payments.length) return;
+  const rows = state.payments.map(p=>`
+    <tr>
+      <td>${new Date(p.created_at).toLocaleDateString('ru-RU')}</td>
+      <td>${p.user_full_name||'—'}</td>
+      <td>${(+p.amount).toFixed(2)} ₽</td>
+      <td><span class="op-badge op-${p.operation_type==='deposit'?'deposit':'charge'}">${p.operation_type==='deposit'?'Пополнение':'Списание'}</span></td>
+    </tr>`).join('');
+  tbody.innerHTML = rows;
+  histTbody.innerHTML = rows;
+}
+
+function renderSubsTable() {
+  if(!state.subs.length) return;
+  document.getElementById('subs-tbody').innerHTML = state.subs.map(s=>`
+    <tr>
+      <td>${s.name}</td>
+      <td>${s.visits_left}</td>
+      <td>${new Date(s.valid_until).toLocaleDateString('ru-RU')}</td>
+      <td>${(+s.price).toFixed(2)} ₽</td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SECTIONS
+// ═══════════════════════════════════════════════════════════
+function showSection(name) {
+  ['mydata','schedule','payments','shop'].forEach(s=>{
+    document.getElementById('section-'+s).classList.toggle('hidden', s!==name);
+    document.getElementById('nav-'+s).classList.toggle('active', s!==name ? false : true);
+  });
+}
+
+function switchPayTab(tab, el) {
+  document.querySelectorAll('.payment-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  ['invoices','history','subs'].forEach(t=>{
+    document.getElementById('pay-tab-'+t).classList.toggle('hidden', t!==tab);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CALENDAR
+// ═══════════════════════════════════════════════════════════
+const MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const DAYS_SHORT = ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'];
+
+function updateMonthLabels() {
+  const now = new Date();
+  const label = MONTHS_RU[now.getMonth()] + ' ' + now.getFullYear();
+  ['profile-month-label','schedule-month-label','payments-month-label'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = label;
+  });
+}
+
+function calNav(dir) {
+  if(state.calView==='month') state.calDate.setMonth(state.calDate.getMonth()+dir);
+  else if(state.calView==='week') state.calDate.setDate(state.calDate.getDate()+dir*7);
+  else state.calDate.setDate(state.calDate.getDate()+dir);
+  renderCalendar();
+}
+
+function setCalView(view, el) {
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  state.calView = view;
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const d = state.calDate;
+  const title = MONTHS_RU[d.getMonth()] + ' ' + d.getFullYear();
+  document.getElementById('cal-month-title').textContent = title;
+
+  if(state.calView==='month') renderMonthView();
+  else if(state.calView==='week') renderWeekView();
+  else renderDayView();
+}
+
+function getSessionsForDate(y, m, day) {
+  return state.sessions.filter(s=>{
+    const dt = new Date(s.start_time);
+    return dt.getFullYear()===y && dt.getMonth()===m && dt.getDate()===day;
+  });
+}
+
+function renderMonthView() {
+  const d = state.calDate;
+  const year = d.getFullYear(), month = d.getMonth();
+  const firstDay = new Date(year,month,1);
+  let startDow = firstDay.getDay(); // 0=Sun
+  startDow = startDow===0?6:startDow-1; // Mon=0
+  const daysInMonth = new Date(year,month+1,0).getDate();
+  const today = new Date();
+
+  let html = `<div class="month-grid">
+    <div class="month-day-names">${DAYS_SHORT.map(d=>`<div class="month-day-name">${d}</div>`).join('')}</div>
+    <div class="month-cells">`;
+
+  // Previous month filler
+  const prevDays = new Date(year,month,0).getDate();
+  for(let i=startDow-1;i>=0;i--) {
+    html+=`<div class="month-cell other-month"><div class="day-num">${prevDays-i}</div></div>`;
+  }
+  // Current month
+  for(let day=1;day<=daysInMonth;day++) {
+    const isToday = today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===day;
+    const sessions = getSessionsForDate(year,month,day);
+    const evHtml = sessions.slice(0,2).map(s=>`<div class="cal-event">${s.title||'Тренировка'}</div>`).join('');
+    html+=`<div class="month-cell${isToday?' today':''}">
+      <div class="day-num">${day}</div>${evHtml}
+    </div>`;
+  }
+  // Next month filler
+  const totalCells = startDow + daysInMonth;
+  const remainder = totalCells % 7;
+  if(remainder>0) for(let i=1;i<=7-remainder;i++) html+=`<div class="month-cell other-month"><div class="day-num">${i}</div></div>`;
+
+  html+=`</div></div>`;
+  document.getElementById('cal-body').innerHTML = html;
+}
+
+function renderWeekView() {
+  const d = new Date(state.calDate);
+  const dow = d.getDay()===0?6:d.getDay()-1;
+  d.setDate(d.getDate()-dow); // Monday
+
+  let headerHtml = `<div style="grid-column:1" class="week-header-cell"></div>`;
+  const weekDays = [];
+  for(let i=0;i<7;i++) {
+    const dd = new Date(d); dd.setDate(d.getDate()+i);
+    weekDays.push(dd);
+    const today = new Date();
+    const isToday = dd.toDateString()===today.toDateString();
+    headerHtml+=`<div class="week-header-cell${isToday?' today-col':''}">
+      <div class="wday">${DAYS_SHORT[i]}</div>
+      <div class="wnum">${dd.getDate()}</div>
+    </div>`;
+  }
+
+  let html = `<div class="week-grid">${headerHtml}
+    <div class="week-time-col">`;
+  for(let h=0;h<24;h++) html+=`<div class="week-hour">${String(h).padStart(2,'0')}:00</div>`;
+  html+=`</div>`;
+
+  for(let i=0;i<7;i++) {
+    html+=`<div class="week-day-col">`;
+    for(let h=0;h<24;h++) html+=`<div class="week-slot"></div>`;
+    html+=`</div>`;
+  }
+  html+=`</div>`;
+  document.getElementById('cal-body').innerHTML = html;
+}
+
+function renderDayView() {
+  const d = state.calDate;
+  const dayNames=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+  const dayName = dayNames[d.getDay()];
+  const dateStr = d.getDate()+' '+MONTHS_RU[d.getMonth()]+' '+d.getFullYear();
+
+  document.getElementById('cal-month-title').textContent = dateStr;
+
+  let html = `<div class="day-grid">
+    <div class="day-header">${dayName}</div>
+    <div class="day-time-col">`;
+  for(let h=0;h<24;h++) html+=`<div class="day-hour-label">${String(h).padStart(2,'0')}:00</div>`;
+  html+=`</div><div style="display:flex;flex-direction:column">`;
+  for(let h=0;h<24;h++) html+=`<div class="day-slot"></div>`;
+  html+=`</div></div>`;
+
+  document.getElementById('cal-body').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TRAINERS
+// ═══════════════════════════════════════════════════════════
+let activeFilter = 'all';
+
+function renderTrainers(filter=activeFilter, search='') {
+  const grid = document.getElementById('trainers-grid');
+  const q = search.toLowerCase();
+  const filtered = state.trainers.filter(t=>{
+    const matchFilter = filter==='all' || t.specialty.includes(filter);
+    const matchSearch = !q || t.name.toLowerCase().includes(q);
+    return matchFilter && matchSearch;
+  });
+
+  if(!filtered.length) {
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:var(--text2);padding:40px">Тренеры не найдены</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(t=>`
+    <div class="trainer-card">
+      <div class="trainer-photo">👤</div>
+      <div class="trainer-overlay">
+        <div class="trainer-name">${t.name}</div>
+        <div class="trainer-tags">${t.tags.map(tag=>`<span class="tag">${tag}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+
+function filterTrainers(filter, el) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderTrainers(filter, document.getElementById('trainer-search').value);
+}
+
+function searchTrainers(val) {
+  renderTrainers(activeFilter, val);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type?' '+type:'');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.className='', 3200);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', ()=>{
+  if(state.accessToken) {
+    showPage('page-profile');
+  }
+});
+</script>
+</body>
+</html>
